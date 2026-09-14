@@ -134,11 +134,11 @@ BEGIN
 					THEN s.sls_quantity * ABS(s.sls_price)
 				ELSE s.sls_sales
 				END sls_sales -- Recalculate sales if original value is missing or incorrect
+		  ,s.sls_quantity
 		  ,CASE WHEN s.sls_price <= 0 OR s.sls_price IS NULL 
 					THEN s.sls_sales / NULLIF(s.sls_quantity, 0)
 				ELSE s.sls_price
 				END sls_price -- Derive price if original value is invalid
-		  ,s.sls_quantity
 	FROM bronze.crm_sales_details s
 	SET @end_time = GETDATE()
 	PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds.'
